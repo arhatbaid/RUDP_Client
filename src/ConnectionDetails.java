@@ -1,5 +1,3 @@
-package client;
-
 public class ConnectionDetails {
     private String hostName;
     private int portNumber;
