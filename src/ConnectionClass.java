@@ -44,7 +44,7 @@ public class ConnectionClass {
 
     public void sendAckToServer(byte[] data) {
         try {
-            receiveAckPacket = new DatagramPacket(data, data.length, InetAddress.getByName(connectionDetails.getHostName()), connectionDetails.getPortNumber());
+            receiveAckPacket = new DatagramPacket(data, data.length, dataPacket.getAddress(), dataPacket.getPort());
             socket.send(receiveAckPacket);
         } catch (IOException e) {
             e.printStackTrace();
