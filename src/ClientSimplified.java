@@ -9,21 +9,11 @@ public class ClientSimplified {
     public static void main(String[] args){
         setServerInfo();
         ConnectionClass connectionClass = new ConnectionClass(connectionDetails);
-        connectionClass.intUDP();
-        byte[] fileBytes = getFileBytes();
-        int fileSize =  fileBytes.length;
-        connectionClass.sendDataToServer(getFileBytes());
-        connectionClass.receiveAckFromServer();
-    }
-
-    private static byte[] getFileBytes() {
-        File file = new File("arhat.jpg");
-        try {
-            return Files.readAllBytes(file.toPath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new byte[0];
+//        byte[] fileBytes = getFileBytes();
+//        int fileSize =  fileBytes.length;
+//        connectionClass.sendAckToServer(ConnectionDetails.ESTABLISH_CONNECTION.getBytes());
+        connectionClass.sendDataToServer();
+//        connectionClass.receiveAckFromServer();
     }
 
     private static void setServerInfo() {

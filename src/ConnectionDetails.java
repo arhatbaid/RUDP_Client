@@ -4,6 +4,16 @@ public class ConnectionDetails {
     private String fileName;
     private int noOfPartition;
 
+    public static String ESTABLISH_CONNECTION = "0";
+    public static String SEND_DATA = "1";
+    public static String SEND_META_DATA = "2";
+    public static String SEND_ACK = "3";
+
+    public static String CONNECTED = "4";
+    public static String DISCONNECTED = "5";
+    public static String IS_CONNECTING = "6";
+
+
     public String getHostName() {
         return hostName;
     }
