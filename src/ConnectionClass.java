@@ -1,3 +1,6 @@
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.*;
@@ -26,18 +29,30 @@ public class ConnectionClass {
         File file = new File("arhat.jpeg");
         try {
             byte[] arrFile = Files.readAllBytes(file.toPath());
+
+           // System.out.println(Arrays.toString(arrFile));
             int totalFileLength = arrFile.length;
             byte[] dataToBeSent;
+            int len = totalFileLength;
             int currentPos = 0;
             while(totalFileLength >= currentPos){
-                dataToBeSent = Arrays.copyOfRange(arrFile, currentPos, currentPos + 64999);
-                if (dataPacket != null) {
-                    dataPacket = new DatagramPacket(dataToBeSent, dataToBeSent.length, dataPacket.getAddress(), dataPacket.getPort());
-                }else {
-                    dataPacket = new DatagramPacket(dataToBeSent, dataToBeSent.length, InetAddress.getByName(connectionDetails.getHostName()), connectionDetails.getPortNumber());
+                if( len >= currentPos){
+                    dataToBeSent = Arrays.copyOfRange(arrFile, currentPos, currentPos + 64999);
+                    System.out.println(Arrays.toString(dataToBeSent));
+                } else {
+                    dataToBeSent = Arrays.copyOfRange(arrFile, currentPos,currentPos+len);
+                    System.out.println(Arrays.toString(dataToBeSent));
                 }
+
+//                if (dataPacket != null) {
+//                    dataPacket = new DatagramPacket(dataToBeSent, dataToBeSent.length, dataPacket.getAddress(), dataPacket.getPort());
+//                }else {
+                    dataPacket = new DatagramPacket(dataToBeSent, dataToBeSent.length, InetAddress.getByName(connectionDetails.getHostName()), connectionDetails.getPortNumber());
+//                }
                 socket.send(dataPacket);
+
                 currentPos = currentPos + 65000;
+                len = len - currentPos ;
                 TimeUnit.SECONDS.sleep(5);
             }
         } catch (IOException | InterruptedException e) {
