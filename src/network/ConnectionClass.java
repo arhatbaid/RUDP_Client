@@ -1,21 +1,25 @@
+package network;
+
+import model.Connection;
+
 import java.io.IOException;
 import java.net.*;
 
 public class ConnectionClass {
 
-    private static ConnectionDetails connectionDetails = null;
+    private static Connection connection = null;
     private static DatagramSocket socket = null;
     private static InetAddress address = null;
     private static DatagramPacket dataPacket = null, sendAckPacket = null, receiveAckPacket = null;
 
-    public ConnectionClass(ConnectionDetails connectionDetails) {
-        ConnectionClass.connectionDetails = connectionDetails;
+    public ConnectionClass(Connection connection) {
+        ConnectionClass.connection = connection;
     }
 
-    public void intUDP() {
+    public void initConnection() {
         try {
             socket = new DatagramSocket();
-            address = InetAddress.getByName(connectionDetails.getHostName());
+            address = InetAddress.getByName(connection.getHostName());
         } catch (SocketException | UnknownHostException e) {
             e.printStackTrace();
         }
@@ -23,7 +27,7 @@ public class ConnectionClass {
 
     public void sendDataToServer(byte[] data) {
         try {
-            dataPacket = new DatagramPacket(data, data.length, InetAddress.getByName(connectionDetails.getHostName()), connectionDetails.getPortNumber());
+            dataPacket = new DatagramPacket(data, data.length, InetAddress.getByName(connection.getHostName()), connection.getPortNumber());
             socket.send(dataPacket);
         } catch (IOException e) {
             e.printStackTrace();
@@ -43,6 +47,15 @@ public class ConnectionClass {
     }
 
     public void sendAckToServer(byte[] data) {
+        try {
+            receiveAckPacket = new DatagramPacket(data, data.length, dataPacket.getAddress(), dataPacket.getPort());
+            socket.send(receiveAckPacket);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendConnectionRequestToServer(byte[] data) {
         try {
             receiveAckPacket = new DatagramPacket(data, data.length, dataPacket.getAddress(), dataPacket.getPort());
             socket.send(receiveAckPacket);

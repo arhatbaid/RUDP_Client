@@ -1,4 +1,6 @@
-public class ConnectionDetails {
+package model;
+
+public class Connection {
     private String hostName;
     private int portNumber;
     private String fileName;
